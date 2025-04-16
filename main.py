@@ -46,6 +46,7 @@ def Log_in(intern_id:int, db:Session=Depends(get_db)):
 
     db.add(attendance)
     db.commit()
+    return("Logged In")
 
 
 @app.post("/Attendance/logout")
@@ -59,6 +60,7 @@ def Log_out(intern_id:int, db:Session=Depends(get_db)):
     query1 = text("""update attendance set logout_time = :logout_time, duration = timediff(:logout_time, login_time) where intern_id = :intern_id and date = CURDATE()""")
     db.execute(query1,{"intern_id":intern_id, "logout_time":logout_time})
     db.commit()
+    return("Logged Out")
 
 
 @app.post("/Tasks/Assign")
@@ -78,6 +80,7 @@ def assign(admin_id:int,intern_id:int, task:str, db:Session=Depends(get_db)):
 
     db.add(assign)
     db.commit()
+    return("Task Assigned")
 
 
 @app.post("/Tasks/Complete")
@@ -89,3 +92,4 @@ def complete(intern_id:int,status:str,db:Session=Depends(get_db)):
     query2 = text("""update tasks set task_status =:status where intern_id=:intern_id""")
     db.execute(query2,{"intern_id":intern_check.intern_id, "status":status})
     db.commit()
+    return("Task Completed")
